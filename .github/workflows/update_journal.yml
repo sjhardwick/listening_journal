@@ -19,7 +19,7 @@ jobs:
         python-version: "3.9"
 
     - name: Install dependencies
-      run: pip install pandas pyvis networkx
+      run: pip install pandas pyvis==0.2.0 networkx jinja2==3.1.2
 
     - name: Generate listening journal
       run: |
@@ -28,30 +28,80 @@ jobs:
         from pyvis.network import Network
         import networkx as nx
         
-        # Load the CSV file
+        # Load the csv file
         csv_file = "data.csv"
         df = pd.read_csv(csv_file)
-
+        
         # Replace NaN in columns with empty strings
         df['notes'] = df['notes'].fillna("")
         df['connection_labels'] = df['connection_labels'].fillna("")
         df['connection_directions'] = df['connection_directions'].fillna("")
-
+        
         # Initialise the pyvis network
         net = Network(notebook=False, directed=True, cdn_resources="in_line")
-
-        # Add nodes and edges (same logic as your script)
+        
+        # Add nodes with colors for albums, artists, loved items, and "to_listen"
         for _, row in df.iterrows():
-            color = "CornflowerBlue" if row['type'] == "album" else "SandyBrown"
-            net.add_node(row['item_id'], label=row['item_name'], color=color)
+            if row['type'] == "album":
+                if row['to_listen'] == 1:
+                    color = "AliceBlue"  # Pale, soft blue for "to listen"
+                else:
+                    color = "#6495ED" if not row['love'] == 1 else "#4263B4"  # DarkCornflowerBlue for loved albums
+            elif row['type'] == "artist":
+                color = "SandyBrown" if not row['love'] == 1 else "DarkOrange"
+            else:
+                color = "gray"  # Default color if type is not recognized
+            
+            # Add node
+            net.add_node(
+                row['item_id'],
+                label=row['item_name'],
+                title=row['notes'],
+                color=color
+            )
+        
+        # Add directional edges with labels
         for _, row in df.iterrows():
             if pd.notna(row['connections']):
                 connections = row['connections'].split('|')
-                for conn in connections:
-                    net.add_edge(row['item_id'], int(conn))
-
-        # Save the HTML file
-        net.show("listening_journal.html")
+                labels = row['connection_labels'].split('|') if row['connection_labels'] else [None] * len(connections)
+                directions = row['connection_directions'].split('|') if row['connection_directions'] else ["none"] * len(connections)
+        
+                for conn, label, direction in zip(connections, labels, directions):
+                    arrow_to = True if direction == "forward" else False
+                    arrow_from = True if direction == "backward" else False
+                    net.add_edge(
+                        row['item_id'], int(conn),
+                        title=label,
+                        arrowStrikethrough=False,
+                        arrows={'to': arrow_to, 'from': arrow_from}
+                    )
+        
+        # Save the HTML output
+        output_file = "listening_journal.html"
+        net.save_graph(output_file)
+        
+        # Add a legend to the HTML file
+        legend_html = """
+        <div style="position: absolute; bottom: 20px; left: 20px; background: white; border: 1px solid black; padding: 10px; font-family: Arial; font-size: 14px;">
+            <b>Legend</b>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li><span style="background-color: #6495ED; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Album</li>
+                <li><span style="background-color: #4263B4; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Favourite album</li>
+                <li><span style="background-color: AliceBlue; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Album to listen</li>
+                <li><span style="background-color: SandyBrown; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Artist</li>
+                <li><span style="background-color: DarkOrange; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Favourite artist</li>
+            </ul>
+        </div>
+        """
+        
+        with open(output_file, "r") as file:
+            html_content = file.read()
+        
+        html_content = html_content.replace("</body>", legend_html + "</body>")
+        
+        with open(output_file, "w") as file:
+            file.write(html_content)
         EOF
 
     - name: Commit and push changes
