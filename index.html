@@ -368,7 +368,7 @@ function highlightFilter(filter) {
                   // adding nodes and edges to the graph
                   data = {nodes: nodes, edges: edges};
 
-                  var options = {"layout": {"improvedLayout": true}, "interaction": {"zoomView": true, "dragView": true}, "physics": {"stabilization": {"enabled": true}}};
+                  var options = {"layout": {"improvedLayout": true}, "interaction": {"zoomView": true, "dragView": true, "hover": true, "tooltipDelay": 300}, "physics": {"stabilization": {"enabled": true}}};
 
                   
 
@@ -391,5 +391,29 @@ function highlightFilter(filter) {
               }
               drawGraph();
         </script>
-    </body>
+    
+<script>
+    var infoBox = document.createElement("div");
+    infoBox.id = "node-info";
+    infoBox.style.position = "fixed";
+    infoBox.style.bottom = "10px";
+    infoBox.style.left = "10px";
+    infoBox.style.background = "white";
+    infoBox.style.padding = "10px";
+    infoBox.style.border = "1px solid black";
+    infoBox.style.display = "none";
+    document.body.appendChild(infoBox);
+
+    network.on("click", function(params) {
+        if (params.nodes.length > 0) {
+            var nodeId = params.nodes[0];
+            var nodeData = network.body.data.nodes.get(nodeId);
+            infoBox.innerHTML = "Node Info: " + nodeData.title;
+            infoBox.style.display = "block";
+        } else {
+            infoBox.style.display = "none";
+        }
+    });
+</script>
+</body>
 </html>
