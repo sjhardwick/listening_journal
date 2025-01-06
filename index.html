@@ -314,35 +314,7 @@ function highlightFilter(filter) {
                   // adding nodes and edges to the graph
                   data = {nodes: nodes, edges: edges};
 
-                  var options = {
-    "configure": {
-        "enabled": false
-    },
-    "edges": {
-        "color": {
-            "inherit": true
-        },
-        "smooth": {
-            "enabled": true,
-            "type": "dynamic"
-        }
-    },
-    "interaction": {
-        "dragNodes": true,
-        "hideEdgesOnDrag": false,
-        "hideNodesOnDrag": false
-    },
-    "physics": {
-        "enabled": true,
-        "stabilization": {
-            "enabled": true,
-            "fit": true,
-            "iterations": 1000,
-            "onlyDynamicEdges": false,
-            "updateInterval": 50
-        }
-    }
-};
+                  var options = {"layout": {"improvedLayout": true}, "physics": {"stabilization": {"enabled": true}}};
 
                   
 
@@ -366,15 +338,17 @@ function highlightFilter(filter) {
               drawGraph();
         </script>
     
-<div style="position: absolute; bottom: 20px; left: 20px; background: white; border: 1px solid black; padding: 10px; font-family: Arial; font-size: 14px;">
-    <b>Legend</b>
-    <ul style="list-style: none; padding: 0; margin: 0;">
-        <li><span style="background-color: #6495ED; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Album</li>
-        <li><span style="background-color: #4263B4; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Favourite album</li>
-        <li><span style="background-color: #AFCBEF; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Album to listen</li>
-        <li><span style="background-color: SandyBrown; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Artist</li>
-        <li><span style="background-color: DarkOrange; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Favourite artist</li>
-    </ul>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 10px; font-family: Arial; font-size: 14px; background: white; border-bottom: 1px solid black;">
+    <div>
+        <b>Legend:</b>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+            <li><span style="background-color: #6495ED; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Album</li>
+            <li><span style="background-color: #4263B4; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Favourite album</li>
+            <li><span style="background-color: AliceBlue; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Album to listen</li>
+            <li><span style="background-color: SandyBrown; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Artist</li>
+            <li><span style="background-color: DarkOrange; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Favourite artist</li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>
