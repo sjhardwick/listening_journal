@@ -1,0 +1,63 @@
+name: Update Journal
+
+on:
+  push:
+    paths:
+      - "data.csv"  # Trigger the workflow when the CSV file is updated
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Install dependencies
+      run: pip install pandas pyvis networkx
+
+    - name: Generate listening journal
+      run: |
+        python <<EOF
+        import pandas as pd
+        from pyvis.network import Network
+        import networkx as nx
+        
+        # Load the CSV file
+        csv_file = "data.csv"
+        df = pd.read_csv(csv_file)
+
+        # Replace NaN in columns with empty strings
+        df['notes'] = df['notes'].fillna("")
+        df['connection_labels'] = df['connection_labels'].fillna("")
+        df['connection_directions'] = df['connection_directions'].fillna("")
+
+        # Initialise the pyvis network
+        net = Network(notebook=False, directed=True, cdn_resources="in_line")
+
+        # Add nodes and edges (same logic as your script)
+        for _, row in df.iterrows():
+            color = "CornflowerBlue" if row['type'] == "album" else "SandyBrown"
+            net.add_node(row['item_id'], label=row['item_name'], color=color)
+        for _, row in df.iterrows():
+            if pd.notna(row['connections']):
+                connections = row['connections'].split('|')
+                for conn in connections:
+                    net.add_edge(row['item_id'], int(conn))
+
+        # Save the HTML file
+        net.show("listening_journal.html")
+        EOF
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.name "GitHub Actions"
+        git config --local user.email "actions@github.com"
+        git add listening_journal.html
+        git commit -m "Regenerate listening journal"
+        git push
