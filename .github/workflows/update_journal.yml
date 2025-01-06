@@ -78,7 +78,7 @@ jobs:
                     )
         
         # Save the HTML output
-        output_file = "listening_journal.html"
+        output_file = "index.html"
         net.save_graph(output_file)
         
         # Add a legend to the HTML file
