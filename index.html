@@ -13,7 +13,7 @@
         }
         #mynetwork {
             width: 100%;
-            height: calc(100vh - 50px);
+            height: calc(100vh - 80px); /* Adjust height to leave space for the legend */
         }
         .legend {
             position: absolute;
@@ -21,24 +21,37 @@
             left: 0;
             right: 0;
             background: white;
-            padding: 10px;
+            padding: 10px 5px;
             font-family: Arial, sans-serif;
-            font-size: 14px;
+            font-size: 1em; /* Responsive font size */
             border-top: 1px solid black;
             text-align: center;
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+            justify-content: center;
+            gap: 10px; /* Add spacing between items */
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border-radius: 50%;
         }
     </style>
 </head>
 
 <div class="legend">
-    <b>Legend:</b>
-    <ul style="list-style: none; padding: 0; margin: 0; display: inline-block; text-align: left;">
-        <li><span style="background-color: #6495ED; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Album</li>
-        <li><span style="background-color: #4263B4; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Favourite album</li>
-        <li><span style="background-color: AliceBlue; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Album to listen</li>
-        <li><span style="background-color: SandyBrown; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Artist</li>
-        <li><span style="background-color: DarkOrange; display: inline-block; width: 15px; height: 15px; margin-right: 10px; border-radius: 50%;"></span>Favourite artist</li>
-    </ul>
+    <div class="legend-item"><span class="legend-color" style="background-color: #6495ED;"></span>Album</div>
+    <div class="legend-item"><span class="legend-color" style="background-color: #4263B4;"></span>Favourite album</div>
+    <div class="legend-item"><span class="legend-color" style="background-color: AliceBlue;"></span>Album to listen</div>
+    <div class="legend-item"><span class="legend-color" style="background-color: SandyBrown;"></span>Artist</div>
+    <div class="legend-item"><span class="legend-color" style="background-color: DarkOrange;"></span>Favourite artist</div>
 </div>
 <head>
         <meta charset="utf-8">
@@ -343,7 +356,7 @@ function highlightFilter(filter) {
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#4263B4", "id": 1, "label": "Robbie Basho - Visions of the Country (1978)", "shape": "dot", "title": "2025-01-06. 12-string fingerpicking \u0026 piano w intensity, vulnerability. Vibrato-rich mystical vocal. Hypnotic, shimmering."}, {"color": "SandyBrown", "id": 2, "label": "Robbie Basho", "shape": "dot", "title": "Folk guitarist, Baltimore, active 1965-1986."}, {"color": "SandyBrown", "id": 3, "label": "Junior Boys", "shape": "dot", "title": "Electronic duo, Hamilton, Ontario, active 1999-."}, {"color": "DarkOrange", "id": 4, "label": "Jim O\u0027Rourke", "shape": "dot", "title": "Rock, avant-garde musician, producer, Chicago, active 1989-."}, {"color": "AliceBlue", "id": 5, "label": "Jim O\u0027Rourke - Insignificance (2001)", "shape": "dot", "title": "To listen"}, {"color": "AliceBlue", "id": 6, "label": "Robbie Basho - The Falconer\u0027s Arm I (1967)", "shape": "dot", "title": "TEST"}, {"color": "#6495ED", "id": 7, "label": "Junior Boys - Waiting Game (2022)", "shape": "dot", "title": "2025-01-06. Incredibly mellow. Nice synth key, horn timbres. Night Walk like Blue Nile meets Earthbound OST."}, {"color": "AliceBlue", "id": 8, "label": "Junior Boys - Last Exit (2004)", "shape": "dot", "title": "To listen"}]);
+                  nodes = new vis.DataSet([{"color": "#4263B4", "id": 1, "label": "Robbie Basho - Visions of the Country (1978)", "shape": "dot", "title": "2025-01-06. 12-string fingerpicking \u0026 piano w intensity, vulnerability. Vibrato-rich mystical vocal. Hypnotic, shimmering."}, {"color": "SandyBrown", "id": 2, "label": "Robbie Basho", "shape": "dot", "title": "Folk guitarist, Baltimore, active 1965-1986."}, {"color": "SandyBrown", "id": 3, "label": "Junior Boys", "shape": "dot", "title": "Electronic duo, Hamilton, Ontario, active 1999-."}, {"color": "DarkOrange", "id": 4, "label": "Jim O\u0027Rourke", "shape": "dot", "title": "Rock, avant-garde musician, producer, Chicago, active 1989-."}, {"color": "AliceBlue", "id": 5, "label": "Jim O\u0027Rourke - Insignificance (2001)", "shape": "dot", "title": "To listen"}, {"color": "AliceBlue", "id": 6, "label": "Robbie Basho - The Falconer\u0027s Arm I (1967)", "shape": "dot", "title": "To listen"}, {"color": "#6495ED", "id": 7, "label": "Junior Boys - Waiting Game (2022)", "shape": "dot", "title": "2025-01-06. Incredibly mellow. Nice synth key, horn timbres. Night Walk like Blue Nile meets Earthbound OST."}, {"color": "AliceBlue", "id": 8, "label": "Junior Boys - Last Exit (2004)", "shape": "dot", "title": "To listen"}]);
                   edges = new vis.DataSet([{"arrowStrikethrough": false, "arrows": {"from": false, "to": true}, "from": 2, "title": "made", "to": 1}, {"arrowStrikethrough": false, "arrows": {"from": false, "to": true}, "from": 2, "title": "made", "to": 6}, {"arrowStrikethrough": false, "arrows": {"from": false, "to": true}, "from": 3, "title": "made", "to": 7}, {"arrowStrikethrough": false, "arrows": {"from": false, "to": true}, "from": 3, "title": "made", "to": 8}, {"arrowStrikethrough": false, "arrows": {"from": false, "to": true}, "from": 4, "title": "Jim\u0027s fave Basho album", "to": 6}, {"arrowStrikethrough": false, "arrows": {"from": false, "to": true}, "from": 4, "title": "made", "to": 5}, {"arrowStrikethrough": false, "arrows": {"from": false, "to": false}, "from": 5, "title": "released on Domino (Jim in UK; JB in US)", "to": 8}]);
 
                   nodeColors = {};
