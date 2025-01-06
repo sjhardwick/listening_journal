@@ -396,19 +396,22 @@ function highlightFilter(filter) {
     var infoBox = document.createElement("div");
     infoBox.id = "node-info";
     infoBox.style.position = "fixed";
-    infoBox.style.bottom = "10px";
-    infoBox.style.left = "10px";
+    infoBox.style.top = "10px"; /* Move to top */
+    infoBox.style.left = "10px"; /* Adjust horizontal position */
     infoBox.style.background = "white";
     infoBox.style.padding = "10px";
     infoBox.style.border = "1px solid black";
     infoBox.style.display = "none";
+    infoBox.style.zIndex = "1000"; /* Ensure it appears above other elements */
+    infoBox.style.fontFamily = "Arial, sans-serif";
+    infoBox.style.fontSize = "14px";
     document.body.appendChild(infoBox);
 
     network.on("click", function(params) {
         if (params.nodes.length > 0) {
             var nodeId = params.nodes[0];
             var nodeData = network.body.data.nodes.get(nodeId);
-            infoBox.innerHTML = "Node Info: " + nodeData.title;
+            infoBox.innerHTML = nodeData.title;
             infoBox.style.display = "block";
         } else {
             infoBox.style.display = "none";
