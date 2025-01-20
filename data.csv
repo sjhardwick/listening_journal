@@ -1,19 +1,25 @@
 ﻿item_id,item_name,type,notes,love,to_listen,connections,connection_labels,connection_directions
-1,Robbie Basho - Visions of the Country (1978),album,"2025-01-06. 12-string fingerpicking & piano w intensity, vulnerability. Vibrato-rich mystical vocal. Hypnotic, shimmering",1,,,,none
+1,Robbie Basho - Visions of the Country (1978),album,"2025-01-06. 12-string fingerpicking & piano w intensity, vulnerability. Vibrato-rich mystical vocal. Hypnotic, shimmering [1978, Windham Hill Records]",1,,,,none
 2,Robbie Basho,artist,"Folk guitarist, Baltimore, active 1965-1986",,,1|6,made|made,forward|forward
 3,Junior Boys,artist,"Electronic duo, Hamilton, Ontario, active 1999-",,,7|8,made|made,forward|forward
 4,Jim O'Rourke,artist,"Rock, avant-garde musician, producer, Chicago, active 1989-",1,,6|5,Jim's fave Basho album|made,none|forward
-5,Jim O'Rourke - Insignificance (2001),album,2025-01-08 (re-listening). Just stunning & first track goes so hard. Glenn Kotche drums. Lyrics occasionally spiritually damaging,,,8,released on Domino (Jim in UK; JB in US),none
+5,Jim O'Rourke - Insignificance (2001),album,"2025-01-08 (re-listening). Just stunning & first track goes so hard. Glenn Kotche drums. Lyrics occasionally spiritually damaging [2001, Drag City]",,,8,released on Domino (Jim in UK; JB in US),none
 6,Robbie Basho - The Falconer's Arm I (1967),album,To listen,,1,,,
-7,Junior Boys - Waiting Game (2022),album,"2025-01-06. Incredibly mellow. Nice synth key, horn timbres. Night Walk like Blue Nile meets Earthbound OST",,,,,
-8,Junior Boys - Last Exit (2004),album,"2025-01-08. Cool busy programmed drum grooves. Soft vocal. Subtle, relaxed, comfortable",,,,,
+7,Junior Boys - Waiting Game (2022),album,"2025-01-06. Incredibly mellow. Nice synth key, horn timbres. Night Walk like Blue Nile meets Earthbound OST [2022, City Slang]",,,,,
+8,Junior Boys - Last Exit (2004),album,"2025-01-08. Cool busy programmed drum grooves. Soft vocal. Subtle, relaxed, comfortable [2004, Domino]",,,,,
 9,Horse Jumper of Love,artist,"Rock band, Boston, active 2013-",,,10,made,forward
-10,Horse Jumper of Love - Disaster Trick (2024),album,"2025-01-08. Great fuzzy guitar melodies, yearning chord changes. Lyrics sometimes juvenile but in a good way. Recorded in Asheville; Karly & MJ of Wednesday guest",,,,,
+10,Horse Jumper of Love - Disaster Trick (2024),album,"2025-01-08. Great fuzzy guitar melodies, yearning chord changes. Lyrics sometimes juvenile but in a good way. Recorded in Asheville; Karly & MJ of Wednesday guest [2024, Run for Cover]",,,,,
 11,MJ Lenderman,artist,"Rock singer-songwriter, Asheville, NC, active 2018-",,,10|13|17,played guitar on|MJ put Forget the Flowers on Spotify playlist|played guitar and sang on,forward|none|forward
 12,Wilco,artist,"Rock band, Chicago, active 1994-",1,,13,made,forward
-13,Wilco - Being There (1996),album,2025-01-09. On some days my favourite album ever. 19 songs all vital. I'D LIKE TO THANK YOU ALL FOR NOTHING,1,,,,
+13,Wilco - Being There (1996),album,"2025-01-09. On some days my favourite album ever. 19 songs all vital. I'D LIKE TO THANK YOU ALL FOR NOTHING [1996, Reprise (Warner Music)]",1,,,,
 14,Jeff Tweedy,artist,"Rock singer-songwriter, Belleville, IL, active 1984-",1,,12|5,member of|played guitar on,forward|forward
-15,Sierra Ferrell - Trail of Flowers (2024),album,"2025-01-09. Clean, spacious Nashville production and excellent musicianship. Lots of different styles. Fun",,,,,
+15,Sierra Ferrell - Trail of Flowers (2024),album,"2025-01-09. Clean, spacious Nashville production and excellent musicianship. Lots of different styles. Fun [2024, Rounder]",,,,,
 16,Sierra Ferrell,artist,"Country singer-songwriter, Charleston, WV, active 2018-",,,15,made,forward
 17,Waxahatchee - Tigers Blood (2024),album,To re-listen,,1,15,nominated best song 2024 Americana Music Awards,none
 18,Waxahatchee,artist,"Project of Katie Crutchfield, rock singer-songwriter, Birmingham, AL, active 2010-",,,17,made,forward
+19,Takeshi Terauchi - Eleki Bushi 1966-1974 (2023 comp),album,"2025-01-10. Had not heard anything quite like this. Japanese scales (& instruments) in heavy hitting surf rock. Shamisen-like guitar. Great remaster job too [2023 comp, 180g]",,,,,
+20,Takeshi Terauchi,artist,"Rock guitarist, Tsuchiara, Japan, active 1960-2021",,,19,made,forward
+21,Wilburn Burchette - Opens the Seven Gates of Transcendental Consciousness (1972),album,"2025-01-12. Passionate, lyrical solo guitar often around drone w plenty echo. Homemade guitar (!) & electronics [1972, Ebos; 2024, Numero Group]",,,,,
+22,Wilburn Burchette,artist,"Guitarist & 'mail-order mystic', California, active 1971-1977",,,21,made,forward
+23,The Weather Station - Humanhood (2025),album,"2025-01-17. V clean, spacious, texturally engaging. Elegant production & orchestration. Almost Joni-like vocal. Approachable [2025, Fat Possum]",,,,,
+24,The Weather Station,artist,"Rock/folk band led by Tamara Lindeman, Toronto, active 2006-",,,23,made,forward
