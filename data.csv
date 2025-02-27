@@ -2,17 +2,17 @@
 1,Robbie Basho - Visions of the Country (1978),album,"2025-01-06. 12-string fingerpicking & piano w intensity, vulnerability. Vibrato-rich mystical vocal. Hypnotic, shimmering [1978, Windham Hill Records]",1,,,,none
 2,Robbie Basho,artist,"Folk guitarist, Baltimore, active 1965-1986",,,1|6,made|made,forward|forward
 3,Junior Boys,artist,"Electronic duo, Hamilton, Ontario, active 1999-",,,7|8,made|made,forward|forward
-4,Jim O'Rourke,artist,"Rock, avant-garde musician, producer, Chicago, active 1989-",1,,6|5,Jim's fave Basho album|made,none|forward
+4,Jim O'Rourke,artist,"Rock, avant-garde musician, producer, Chicago, active 1989-",1,,6|5,Jim's fave Basho album|made,backward|forward
 5,Jim O'Rourke - Insignificance (2001),album,"2025-01-08 (re-listening). Just stunning & first track goes so hard. Glenn Kotche drums. Lyrics occasionally spiritually damaging [2001, Drag City]",,,8,released on Domino (Jim in UK; JB in US),none
 6,Robbie Basho - The Falconer's Arm I (1967),album,"2025-01-20. Vast, expressive 12-string & on one track, flute. Often trancelike, evokes Hindustani classical music. Spiritually elevated [1967, Takoma Records]",,,,,
 7,Junior Boys - Waiting Game (2022),album,"2025-01-06. Incredibly mellow. Nice synth key, horn timbres. Night Walk like Blue Nile meets Earthbound OST [2022, City Slang]",,,,,
 8,Junior Boys - Last Exit (2004),album,"2025-01-08. Cool busy programmed drum grooves. Soft vocal. Subtle, relaxed, comfortable [2004, Domino]",,,,,
 9,Horse Jumper of Love,artist,"Rock band, Boston, active 2013-",,,10,made,forward
 10,Horse Jumper of Love - Disaster Trick (2024),album,"2025-01-08. Great fuzzy guitar melodies, yearning chord changes. Lyrics sometimes juvenile but in a good way. Recorded in Asheville; Karly & MJ of Wednesday guest [2024, Run for Cover]",,,,,
-11,MJ Lenderman,artist,"Rock singer-songwriter, Asheville, NC, active 2018-",,,10|13|17|31,played guitar on|MJ put Forget the Flowers on Spotify playlist|played guitar and sang on|member of,forward|none|forward|forward
+11,MJ Lenderman,artist,"Rock singer-songwriter, Asheville, NC, active 2018-",,,10|13|17|31,played guitar on|MJ put Forget the Flowers on Spotify playlist|played guitar and sang on|member of,forward|backward|forward|forward
 12,Wilco,artist,"Rock band, Chicago, active 1994-",1,,13,made,forward
-13,Wilco - Being There (1996),album,"2025-01-09 (re-listening). On some days my favourite album ever. 19 songs all vital. I'D LIKE TO THANK YOU ALL FOR NOTHING [1996, Reprise (Warner Music)]",1,,,,
-14,Jeff Tweedy,artist,"Rock singer-songwriter, Belleville, IL, active 1984-",1,,12|5|27,member of|played guitar on|produced,forward|forward|forward
+13,Wilco - Being There (1996),album,"2025-01-09 (re-listening). On some days my favourite album ever. 19 songs all so good. I'D LIKE TO THANK YOU ALL FOR NOTHING [1996, Reprise (Warner Music)]",1,,,,
+14,Jeff Tweedy,artist,"Rock singer-songwriter, Belleville, IL, active 1984-",1,,12|5|27|61,member of|played guitar on|produced|member of,forward|forward|forward|forward
 15,Sierra Ferrell - Trail of Flowers (2024),album,"2025-01-09. Clean, spacious Nashville production & excellent musicianship. Lots of different styles. Fun [2024, Rounder]",,,,,
 16,Sierra Ferrell,artist,"Country singer-songwriter, Charleston, WV, active 2018-",,,15,made,forward
 17,Waxahatchee - Tigers Blood (2024),album,To re-listen,,1,15,nominated best song 2024 Americana Music Awards,none
@@ -29,7 +29,7 @@
 28,Soccer Mommy,artist,"Rock/pop singer-songwriter, Nashville, active 2015-",,,12|29,sang Pot Kettle Black together live in 2022|made,none|forward
 29,Soccer Mommy - Clean (2018),album,To re-listen,,1,23,released on Fat Possum,none
 30,Unwound - Unwound (1995),album,To listen,,1,21,reissued on Numero,none
-31,Wednesday,artist,"Rock band, Asheville, NC, active 2017-",1,,30,Karly put several songs from Unwound s/t on Spotify playlist,none
+31,Wednesday,artist,"Rock band, Asheville, NC, active 2017-",1,,30,Karly put several songs from Unwound s/t on Spotify playlist,backward
 32,Unwound,artist,"Rock band, Tumwater/Olympia, WA, active 1988-2002, 2022-",,,30,made,forward
 33,FKA twigs - Eusexua (2025),album,"2025-02-01. Adventurous techno/Bjork-like pop. Lots of cool twists & turns. Like a less humourous Pop 2 [2025, Young]",,,,,
 34,FKA twigs,artist,"Pop singer-songwriter, Cheltenham, Glos., active 2004-",,,33,made,forward
@@ -39,8 +39,24 @@
 38,"Bonnie ""Prince"" Billy",artist,"Rock/country singer-songwriter, Louisville, KY, active 1993-",,,37|43,made|made,forward|forward
 39,Leonard Cohen - Songs of Leonard Cohen (1967),album,To re-listen,,1,35,Winter says listened to every day while making Heavy Metal,forward
 40,Leonard Cohen,artist,"Folk/rock singer-songwriter, Montreal, active (in music) 1966-2016",,,39|41,made|made,forward|forward
-41,Leonard Cohen - Songs of Love and Hate (1971),album,To re-listen,,1,28,SM cites Famous Blue Raincoat as fave LC song,none
+41,Leonard Cohen - Songs of Love and Hate (1971),album,To re-listen,,1,28,SM cites Famous Blue Raincoat as fave LC song,forward
 42,Tortoise,artist,"Post-rock band, Chicago, active 1990-",,,43,made,forward
 43,"Tortoise and Bonnie ""Prince"" Billy - The Brave and the Bold (2006)",album,To listen,,1,,,
 44,Richard and Linda Thompson - I Want to See the Bright Lights Tonight (1974),album,To listen,,1,43,none,Tortoise & BPB cover Calvary Cross
 45,Linda Thompson,artist,"Folk/rock singer-songwriter, London, active 1966-",,,44,made,forward
+46,Atoris,artist,"Ambient/new age trio, Tokyo, active 2019-",,,47,made,forward
+47,Atoris - Sea & Forest (2022),album,"2025-02-27. Very pleasant repeating, drifting electronic textures & motifs. Like walking through the park on a misty day. Straight to the study playlist [2022, Moon Glyph]",,,,,
+48,Lia Kohl,artist,"Cellist/composer/sound artist, Chicago, active 2019?-",,,50|51,made|made,forward|forward
+49,Whitney Johnson,artist,"Experimental composer/improviser, Chicago, active 2013?-",,,50,made,forward
+50,Whitney Johnson & Lia Kohl - For Translucence (2025),album,To listen,,1,5,on Drag City & from Chicago,both
+51,Lia Kohl - Normal Sounds (2024),album,To listen,,1,47,on Moon Glyph,both
+52,FKA Twigs - LP1 (2014),album,To listen,,,34,made,backward
+53,Arca,artist,"Singer, producer, Caracas, Venezuela, active 2012-",,,52,produced some tracks,forward
+54,Björk,artist,"Singer/songwriter/composer, Reykjavik, Iceland, active 1977-",,,55,made,forward
+55,Björk - Utopia (2017),album,To listen,,1,53,"producer, co-wrote much of",backward
+56,Dirty Projectors,artist,"Rock band, Brooklyn, active 2002-",,,,,
+57,Björk & Dirty Projectors - Mount Wittenberg Orca (2010),album,To re-listen,,1,56|58,made|made,backward|backward
+58,Dirty Projectors - Rise Above (2007),album,To re-listen,,1,56,made,backward
+59,Black Flag,artist,"Punk band, Hermosa Beach, CA, active 1976-sort of present",,,60,made,forward
+60,Black Flag - Damaged (1980),album,To re-listen,,1,58,re-interpretation of,forward
+61,Uncle Tupelo,artist,"Country rock band, Belleville, IL, active 1987-1994",,,60,UT covered Gimme Gimme Gimme,backward
