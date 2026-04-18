@@ -1,0 +1,5 @@
+.DS_Store
+.vercel
+.ipynb_checkpoints/
+.virtual_documents/
+node_modules/
