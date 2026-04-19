@@ -401,7 +401,7 @@ function drawNetwork() {
                 cb(null);
             },
             addEdge(data, cb) {
-                if (data.from === data.to) { cb(null); return; }
+                if (data.from === data.to) { cb(null); resetAddEdgeUI(); return; }
                 const e = {
                     id: nextEdgeId(),
                     owner: data.from,
@@ -412,6 +412,7 @@ function drawNetwork() {
                 };
                 openEdgeEditor(e);
                 cb(null);
+                resetAddEdgeUI();
             },
             editNode(data, cb) {
                 const n = model.nodes.find(x => x.id === data.id);
@@ -497,16 +498,32 @@ function focusLatest() {
 
 function setEditMode(on) {
     editMode = on;
-    const btn = document.getElementById('btnMode');
-    btn.textContent = on ? 'Done' : 'Edit';
-    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    document.getElementById('btnSave').classList.toggle('hidden', !on || !saveAvailable);
-    document.getElementById('btnExport').classList.toggle('hidden', !on);
-    document.getElementById('btnImportLabel').classList.toggle('hidden', !on);
+    const btnMode = document.getElementById('btnMode');
+    btnMode.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btnMode.setAttribute('aria-label', on ? 'Done' : 'Edit');
+    btnMode.classList.toggle('btn-primary', on);
+    btnMode.classList.toggle('btn-icon', !on);
+    btnMode.innerHTML = on ? 'Done' : '<svg class="ic"><use href="#ic-edit"/></svg>';
+
+    document.getElementById('editActions').classList.toggle('hidden', !on);
+    document.getElementById('btnSave').classList.toggle('hidden', !saveAvailable);
+    document.getElementById('viewToggle').classList.toggle('hidden', on);
+
     if (network) {
         network.setOptions({ manipulation: { enabled: on } });
-        if (!on) network.unselectAll();
+        if (!on) {
+            network.unselectAll();
+            network.disableEditMode();
+            resetAddEdgeUI();
+        }
     }
+}
+
+function resetAddEdgeUI() {
+    const b = document.getElementById('btnAddEdge');
+    if (b) b.setAttribute('aria-pressed', 'false');
+    const s = document.getElementById('hintStrip');
+    if (s) s.classList.remove('is-shown');
 }
 
 // ----- View toggle (Graph ↔ List) -------------------------------------------
@@ -519,7 +536,7 @@ function setView(next) {
     document.getElementById('mynetwork').style.display = isList ? 'none' : '';
     document.getElementById('listview').style.display = isList ? 'block' : 'none';
     document.querySelector('.legend').style.display = isList ? 'none' : '';
-    document.getElementById('btnMode').style.display = isList ? 'none' : '';
+    document.getElementById('btnMode').classList.toggle('hidden', isList);
     if (isList) {
         setEditMode(false);
         document.getElementById('infoBox').style.display = 'none';
@@ -676,6 +693,25 @@ document.getElementById('btnViewGraph').onclick = () => setView('graph');
 document.getElementById('btnViewList').onclick = () => setView('list');
 document.getElementById('btnSave').onclick = saveToServer;
 document.getElementById('btnExport').onclick = downloadCSV;
+document.getElementById('btnImport').onclick = () => document.getElementById('importFile').click();
+document.getElementById('btnAddNode').onclick = () => {
+    if (!network) return;
+    const view = network.getViewPosition();
+    openNodeEditor(null, { x: view.x, y: view.y });
+};
+document.getElementById('btnAddEdge').onclick = () => {
+    const b = document.getElementById('btnAddEdge');
+    const on = b.getAttribute('aria-pressed') === 'true';
+    if (on) {
+        network && network.disableEditMode();
+        resetAddEdgeUI();
+    } else {
+        if (!network) return;
+        network.addEdgeMode();
+        b.setAttribute('aria-pressed', 'true');
+        document.getElementById('hintStrip').classList.add('is-shown');
+    }
+};
 document.getElementById('importFile').addEventListener('change', e => {
     const f = e.target.files[0];
     if (f) importCSVFile(f);

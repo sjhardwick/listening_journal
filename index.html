@@ -78,61 +78,117 @@
             text-align: center;
             margin-top: 32px;
         }
-        /* Segmented Graph / List toggle */
-        #viewToggle {
-            display: inline-flex;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            overflow: hidden;
+        /* Design tokens — iOS system palette */
+        :root {
+            --ios-blue: #0A84FF;
+            --ios-orange: #FF9500;
+            --ios-red: #FF3B30;
+            --hairline: rgba(0,0,0,.1);
+            --tint-bg: rgba(10,132,255,.10);
+            --seg-track: rgba(118,118,128,.12);
         }
-        #viewToggle button {
-            min-height: 36px;
-            min-width: 0;
-            padding: 0 10px;
-            border: none;
-            background: #fff;
-            border-radius: 0;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        #viewToggle button + button { border-left: 1px solid #ccc; }
-        #viewToggle button[aria-pressed="true"] {
-            background: #2d6cdf;
-            color: #fff;
-        }
-        #toolbar {
+        /* Top toolbar — translucent nav-bar */
+        .toolbar {
             position: fixed;
             top: 0; left: 0; right: 0;
             height: var(--toolbar-h);
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 0 8px;
-            background: #fafafa;
-            border-bottom: 1px solid #e3e3e3;
+            padding: 0 12px;
+            background: rgba(249,249,249,.94);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--hairline);
             z-index: 10;
         }
-        #toolbar .title {
+        .toolbar-title {
             font-weight: 600;
-            margin-right: auto;
             font-size: 15px;
+            margin-right: auto;
         }
-        #toolbar button, #toolbar label.btn {
-            min-height: 36px;
-            min-width: 36px;
+        /* Button system */
+        .btn {
+            height: 32px;
             padding: 0 12px;
-            border: 1px solid #ccc;
-            background: #fff;
-            border-radius: 6px;
-            font-size: 14px;
+            border: none;
+            background: transparent;
+            color: var(--ios-blue);
+            font: 600 15px/1 inherit;
+            border-radius: 8px;
             cursor: pointer;
         }
-        #toolbar button[aria-pressed="true"] {
-            background: #2d6cdf;
+        .btn:active { background: var(--tint-bg); }
+        .btn:disabled { opacity: .4; cursor: default; }
+        .btn-primary {
+            height: 34px;
+            padding: 0 16px;
+            border: none;
+            background: var(--ios-blue);
             color: #fff;
-            border-color: #2d6cdf;
+            font: 600 15px/1 inherit;
+            border-radius: 14px;
+            cursor: pointer;
         }
-        #toolbar button:disabled { opacity: .5; cursor: default; }
+        .btn-primary:active { opacity: .85; }
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: var(--ios-blue);
+            border-radius: 10px;
+            cursor: pointer;
+            padding: 0;
+        }
+        .btn-icon:active,
+        .btn-icon[aria-pressed="true"] { background: var(--tint-bg); }
+        .btn-icon svg.ic { width: 22px; height: 22px; display: block; }
+        /* iOS segmented control */
+        .segmented {
+            display: inline-flex;
+            padding: 2px;
+            gap: 2px;
+            height: 32px;
+            background: var(--seg-track);
+            border-radius: 9px;
+        }
+        .segmented .seg {
+            border: none;
+            background: transparent;
+            color: #000;
+            padding: 0 14px;
+            font: 500 14px/1 inherit;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+        .segmented .seg[aria-pressed="true"] {
+            background: #fff;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.04);
+        }
+        /* Edit-mode action cluster */
+        .edit-actions { display: inline-flex; gap: 2px; }
+        .edit-actions.hidden { display: none; }
+        /* Hint strip shown while add-edge mode is active */
+        .hint-strip {
+            position: fixed;
+            top: var(--toolbar-h);
+            left: 0; right: 0;
+            height: 28px;
+            background: var(--tint-bg);
+            color: var(--ios-blue);
+            font-size: 13px;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9;
+        }
+        .hint-strip.is-shown { display: flex; }
         .legend {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -182,29 +238,33 @@
             color: #888;
             margin-left: 8px;
         }
-        /* Banner (unsaved changes). Anchored above the legend so it never
-           overlaps the vis.js manipulation toolbar at the top of the canvas. */
+        /* Banner (unsaved changes). Sits above the legend. */
         #banner {
             position: fixed;
             bottom: calc(var(--legend-h) + var(--safe-bottom));
             left: 0; right: 0;
-            padding: 8px 10px;
-            background: #fff6d1;
-            border-top: 1px solid #e6d56b;
+            padding: 10px 14px;
+            background: rgba(255,149,0,.12);
+            border-top: 1px solid rgba(255,149,0,.25);
+            color: #8a4b00;
             font-size: 13px;
+            font-weight: 500;
             display: none;
             z-index: 8;
             text-align: center;
         }
         #banner button {
-            margin-left: 6px;
-            min-height: 32px;
-            padding: 4px 12px;
-            border: 1px solid #b89c29;
-            background: #fff;
-            border-radius: 4px;
+            margin-left: 10px;
+            height: 28px;
+            padding: 0 10px;
+            border: none;
+            background: transparent;
+            color: var(--ios-blue);
+            font: 600 14px/1 inherit;
+            border-radius: 6px;
             cursor: pointer;
         }
+        #banner button:active { background: var(--tint-bg); }
         /* Modal */
         .modal-backdrop {
             position: fixed; inset: 0;
@@ -247,21 +307,30 @@
             flex-wrap: wrap;
         }
         .modal-actions button {
-            min-height: 40px;
+            height: 36px;
             padding: 0 14px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            background: #fff;
-            font-size: 14px;
+            border: none;
+            background: transparent;
+            color: var(--ios-blue);
+            font: 600 15px/1 inherit;
+            border-radius: 8px;
             cursor: pointer;
         }
+        .modal-actions button:active { background: var(--tint-bg); }
         .modal-actions button.primary {
-            background: #2d6cdf; color: #fff; border-color: #2d6cdf;
+            background: var(--ios-blue);
+            color: #fff;
+            border-radius: 10px;
+        }
+        .modal-actions button.primary:active {
+            opacity: .85;
+            background: var(--ios-blue);
         }
         .modal-actions button.danger {
-            background: #c0392b; color: #fff; border-color: #c0392b;
+            color: var(--ios-red);
             margin-right: auto;
         }
+        .modal-actions button.danger:active { background: rgba(255,59,48,.1); }
         /* On narrow screens, make modal a bottom-sheet */
         @media (max-width: 540px) {
             .modal-backdrop { align-items: flex-end; }
@@ -272,36 +341,63 @@
                 padding-bottom: calc(16px + var(--safe-bottom));
             }
         }
-        /* vis.js manipulation panel — make buttons bigger on touch */
-        div.vis-manipulation {
-            border-top: none !important;
-            background: #fafafa !important;
-            min-height: 44px;
-            z-index: 20;
-        }
-        div.vis-manipulation .vis-button {
-            min-height: 40px;
-            min-width: 40px;
-        }
-        div.vis-edit-mode {
-            z-index: 20;
-        }
+        /* Hide vis.js's built-in manipulation UI; we drive it via our own buttons. */
+        div.vis-manipulation,
+        div.vis-edit-mode { display: none !important; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <div id="toolbar">
-        <span class="title">Listening journal</span>
-        <div id="viewToggle" role="group" aria-label="View">
-            <button id="btnViewGraph" aria-pressed="true">Graph</button>
-            <button id="btnViewList" aria-pressed="false">List</button>
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
+        <symbol id="ic-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/>
+            <path d="M18.5 2.5a2.12 2.12 0 1 1 3 3L12 15l-4 1 1-4z"/>
+        </symbol>
+        <symbol id="ic-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 12h8"/>
+            <path d="M12 8v8"/>
+        </symbol>
+        <symbol id="ic-edge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="18" r="2.4"/>
+            <circle cx="18" cy="6" r="2.4"/>
+            <line x1="8" y1="16" x2="16" y2="8"/>
+        </symbol>
+        <symbol id="ic-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <path d="M17 8l-5-5-5 5"/>
+            <path d="M12 3v12"/>
+        </symbol>
+        <symbol id="ic-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <path d="M7 10l5 5 5-5"/>
+            <path d="M12 15V3"/>
+        </symbol>
+        <symbol id="ic-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.24"/>
+            <path d="M12 12v9"/>
+            <path d="M16 16l-4-4-4 4"/>
+        </symbol>
+    </defs></svg>
+
+    <header class="toolbar">
+        <span class="toolbar-title">Listening journal</span>
+        <div class="segmented" id="viewToggle" role="tablist" aria-label="View">
+            <button id="btnViewGraph" class="seg" aria-pressed="true">Graph</button>
+            <button id="btnViewList"  class="seg" aria-pressed="false">List</button>
         </div>
-        <button id="btnMode" aria-pressed="false" title="Toggle edit mode">Edit</button>
-        <button id="btnSave" class="hidden" title="Commit to GitHub">Save</button>
-        <button id="btnExport" class="hidden" title="Download data.csv">Export</button>
-        <label class="btn hidden" id="btnImportLabel" for="importFile" title="Load a data.csv">Import</label>
-        <input type="file" id="importFile" accept=".csv,text/csv" style="display:none">
-    </div>
+        <div class="edit-actions hidden" id="editActions">
+            <button class="btn-icon" id="btnAddNode" aria-label="Add node"><svg class="ic"><use href="#ic-plus"/></svg></button>
+            <button class="btn-icon" id="btnAddEdge" aria-label="Add edge" aria-pressed="false"><svg class="ic"><use href="#ic-edge"/></svg></button>
+            <button class="btn-icon" id="btnExport"  aria-label="Export CSV"><svg class="ic"><use href="#ic-up"/></svg></button>
+            <button class="btn-icon" id="btnImport"  aria-label="Import CSV"><svg class="ic"><use href="#ic-down"/></svg></button>
+            <button class="btn-icon hidden" id="btnSave" aria-label="Save to GitHub"><svg class="ic"><use href="#ic-cloud"/></svg></button>
+        </div>
+        <button class="btn-icon" id="btnMode" aria-label="Edit" aria-pressed="false"><svg class="ic"><use href="#ic-edit"/></svg></button>
+        <input type="file" id="importFile" accept=".csv,text/csv" hidden>
+    </header>
+
+    <div class="hint-strip" id="hintStrip">Drag from one node to another</div>
 
     <div id="banner"></div>
     <div id="mynetwork"></div>
