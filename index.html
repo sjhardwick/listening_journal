@@ -113,21 +113,24 @@
             color: #888;
             margin-left: 8px;
         }
-        /* Banner (unsaved changes / source indicator) */
+        /* Banner (unsaved changes). Anchored above the legend so it never
+           overlaps the vis.js manipulation toolbar at the top of the canvas. */
         #banner {
             position: fixed;
-            top: var(--toolbar-h);
+            bottom: calc(var(--legend-h) + var(--safe-bottom));
             left: 0; right: 0;
-            padding: 6px 10px;
+            padding: 8px 10px;
             background: #fff6d1;
-            border-bottom: 1px solid #e6d56b;
+            border-top: 1px solid #e6d56b;
             font-size: 13px;
             display: none;
             z-index: 8;
+            text-align: center;
         }
         #banner button {
-            margin-left: 8px;
-            padding: 4px 10px;
+            margin-left: 6px;
+            min-height: 32px;
+            padding: 4px 12px;
             border: 1px solid #b89c29;
             background: #fff;
             border-radius: 4px;
@@ -204,9 +207,15 @@
         div.vis-manipulation {
             border-top: none !important;
             background: #fafafa !important;
+            min-height: 44px;
+            z-index: 20;
         }
         div.vis-manipulation .vis-button {
-            min-height: 36px;
+            min-height: 40px;
+            min-width: 40px;
+        }
+        div.vis-edit-mode {
+            z-index: 20;
         }
         .hidden { display: none !important; }
     </style>

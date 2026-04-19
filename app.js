@@ -153,7 +153,6 @@ function toVisNode(n) {
     return {
         id: n.id,
         label: n.name,
-        title: n.notes || n.name,
         color: nodeColor(n),
         shape: 'dot',
         size: 12,
