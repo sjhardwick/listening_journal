@@ -1,5 +1,5 @@
 ﻿item_id,item_name,type,notes,love,to_listen,connections,connection_labels,connection_directions
-1,Robbie Basho - Visions of the Country (1978),album,"2025-01-06. 12-string fingerpicking & piano w intensity, vulnerability. Vibrato-rich mystical vocal. Hypnotic, shimmering [1978, Windham Hill Records]",1,,,,none
+1,Robbie Basho - Visions of the Country (1978),album,"2025-01-06. 12-string fingerpicking & piano w intensity, vulnerability. Vibrato-rich mystical vocal. Hypnotic, shimmering [1978, Windham Hill Records]",1,,,,
 2,Robbie Basho,artist,"Folk guitarist, Baltimore, active 1965-1986",,,1|6,made|made,forward|forward
 3,Junior Boys,artist,"Electronic duo, Hamilton, Ontario, active 1999-",,,7|8,made|made,forward|forward
 4,Jim O'Rourke,artist,"Rock, avant-garde musician, producer, Chicago, active 1989-",1,,6|5,Jim's fave Basho album|made,backward|forward
@@ -42,7 +42,7 @@
 41,Leonard Cohen - Songs of Love and Hate (1971),album,To re-listen,,1,28,SM cites Famous Blue Raincoat as fave LC song,forward
 42,Tortoise,artist,"Post-rock band, Chicago, active 1990-",,,43,made,forward
 43,"Tortoise and Bonnie ""Prince"" Billy - The Brave and the Bold (2006)",album,To listen,,1,,,
-44,Richard and Linda Thompson - I Want to See the Bright Lights Tonight (1974),album,To listen,,1,43,none,Tortoise & BPB cover Calvary Cross
+44,Richard and Linda Thompson - I Want to See the Bright Lights Tonight (1974),album,To listen,,1,43,none,none
 45,Linda Thompson,artist,"Folk/rock singer-songwriter, London, active 1966-",,,44,made,forward
 46,Atoris,artist,"Ambient/new age trio, Tokyo, active 2019-",,,47,made,forward
 47,Atoris - Sea & Forest (2022),album,"2025-02-27. Very pleasant repeating, drifting electronic textures & motifs. Like walking through the park on a misty day. Straight to the study playlist [2022, Moon Glyph]",,,,,
@@ -74,3 +74,4 @@
 73,Erika de Casier - Lifetime (2025),album,"2026-02-08. Actually listened to it a lot last year. Underrated trip hop masterpiece. Wise. A cool breeze [2025, Independent Jeep]",1,,,,
 74,Kara-Lis Coverdale,artist,"Experimental/classical composer and musician, Ontario, active 2012?-",,,75,made,forward
 75,Kara-Lis Coverdale - Grafts (2017),album,"2026-02-09. Repeating but always moving layers of various processed/chopped instrumental passages. Really beautiful. Slept on, especially title track [2017, Boomkat Editions]",1,,,,
+76,The Innocence Mission,artist,"Indie pop band, Lancaster, PA, active 1986-",,,,,
