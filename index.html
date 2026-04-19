@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Listening journal</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="stylesheet" href="lib/vis-9.1.2/vis-network.css">
     <style>
         :root {
@@ -30,6 +30,75 @@
             right: 0;
             bottom: calc(var(--legend-h) + var(--safe-bottom));
             background: #fff;
+        }
+        #listview {
+            position: absolute;
+            top: var(--toolbar-h);
+            left: 0;
+            right: 0;
+            bottom: var(--safe-bottom);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 12px 16px calc(12px + var(--safe-bottom));
+            background: #fff;
+            display: none;
+        }
+        #listview article {
+            padding: 10px 0 12px;
+            border-bottom: 1px solid #eee;
+        }
+        #listview article:last-child { border-bottom: none; }
+        #listview .item-head {
+            display: flex;
+            gap: 10px;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        #listview .item-name { font-weight: 600; font-size: 15px; }
+        #listview .item-name .heart {
+            color: #4263B4;
+            margin-right: 4px;
+        }
+        #listview .item-date {
+            color: #888;
+            font-size: 12px;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        #listview .item-notes {
+            font-size: 14px;
+            line-height: 1.45;
+            color: #222;
+            white-space: pre-wrap;
+        }
+        #listview .empty {
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            margin-top: 32px;
+        }
+        /* Segmented Graph / List toggle */
+        #viewToggle {
+            display: inline-flex;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        #viewToggle button {
+            min-height: 36px;
+            min-width: 0;
+            padding: 0 10px;
+            border: none;
+            background: #fff;
+            border-radius: 0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        #viewToggle button + button { border-left: 1px solid #ccc; }
+        #viewToggle button[aria-pressed="true"] {
+            background: #2d6cdf;
+            color: #fff;
         }
         #toolbar {
             position: fixed;
@@ -223,6 +292,10 @@
 <body>
     <div id="toolbar">
         <span class="title">Listening journal</span>
+        <div id="viewToggle" role="group" aria-label="View">
+            <button id="btnViewGraph" aria-pressed="true">Graph</button>
+            <button id="btnViewList" aria-pressed="false">List</button>
+        </div>
         <button id="btnMode" aria-pressed="false" title="Toggle edit mode">Edit</button>
         <button id="btnSave" class="hidden" title="Commit to GitHub">Save</button>
         <button id="btnExport" class="hidden" title="Download data.csv">Export</button>
@@ -232,6 +305,7 @@
 
     <div id="banner"></div>
     <div id="mynetwork"></div>
+    <div id="listview"></div>
     <div id="infoBox"><span class="close" id="infoBoxClose">×</span><div id="infoBoxContent"></div></div>
 
     <div class="legend">

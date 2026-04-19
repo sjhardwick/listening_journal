@@ -34,6 +34,8 @@ let editMode = false;
 let saveAvailable = false;
 let dirty = false;
 let model = { nodes: [], edges: [] };
+let view = 'graph';
+let listStale = true;
 
 // ----- CSV parser (RFC 4180-ish) --------------------------------------------
 
@@ -211,6 +213,8 @@ function markDirty() {
     dirty = true;
     localStorage.setItem(LS_KEY, JSON.stringify({ model, ts: Date.now() }));
     updateBanner();
+    listStale = true;
+    if (view === 'list') { renderList(); listStale = false; }
 }
 
 function clearLocal() {
@@ -442,6 +446,7 @@ function drawNetwork() {
     };
     network = new vis.Network(container, { nodes, edges }, options);
     window.network = network;
+    network.once('stabilizationIterationsDone', focusLatest);
 
     const box = document.getElementById('infoBox');
     const content = document.getElementById('infoBoxContent');
@@ -481,6 +486,15 @@ function drawNetwork() {
     document.getElementById('infoBoxClose').onclick = () => { box.style.display = 'none'; };
 }
 
+function focusLatest() {
+    if (!network || !model.nodes.length) return;
+    const latest = model.nodes.reduce((a, b) => (b.id > a.id ? b : a));
+    network.focus(latest.id, {
+        scale: 1.2,
+        animation: { duration: 500, easingFunction: 'easeInOutQuad' },
+    });
+}
+
 function setEditMode(on) {
     editMode = on;
     const btn = document.getElementById('btnMode');
@@ -493,6 +507,55 @@ function setEditMode(on) {
         network.setOptions({ manipulation: { enabled: on } });
         if (!on) network.unselectAll();
     }
+}
+
+// ----- View toggle (Graph ↔ List) -------------------------------------------
+
+function setView(next) {
+    view = next;
+    const isList = next === 'list';
+    document.getElementById('btnViewGraph').setAttribute('aria-pressed', isList ? 'false' : 'true');
+    document.getElementById('btnViewList').setAttribute('aria-pressed', isList ? 'true' : 'false');
+    document.getElementById('mynetwork').style.display = isList ? 'none' : '';
+    document.getElementById('listview').style.display = isList ? 'block' : 'none';
+    document.querySelector('.legend').style.display = isList ? 'none' : '';
+    document.getElementById('btnMode').style.display = isList ? 'none' : '';
+    if (isList) {
+        setEditMode(false);
+        document.getElementById('infoBox').style.display = 'none';
+        if (listStale) { renderList(); listStale = false; }
+    }
+}
+
+function renderList() {
+    const container = document.getElementById('listview');
+    const items = [];
+    for (const n of model.nodes) {
+        if (n.type !== 'album') continue;
+        const m = (n.notes || '').match(/^(\d{4}-\d{2}-\d{2})/);
+        if (!m) continue;
+        items.push({ node: n, date: m[1] });
+    }
+    items.sort((a, b) => b.date.localeCompare(a.date));
+    if (!items.length) {
+        container.innerHTML = '<div class="empty">No dated album notes yet.</div>';
+        return;
+    }
+    const html = items.map(({ node, date }) => {
+        const notes = (node.notes || '').replace(/^\d{4}-\d{2}-\d{2}\.?\s*/, '');
+        const heart = node.love ? '<span class="heart" aria-label="Favourite">♥</span>' : '';
+        return (
+            '<article>' +
+              '<div class="item-head">' +
+                '<div class="item-name">' + heart + escHTML(node.name) + '</div>' +
+                '<div class="item-date">' + escHTML(date) + '</div>' +
+              '</div>' +
+              (notes ? '<div class="item-notes">' + escHTML(notes) + '</div>' : '') +
+            '</article>'
+        );
+    }).join('');
+    container.innerHTML = html;
+    container.scrollTop = 0;
 }
 
 // ----- Save / export / import ------------------------------------------------
@@ -597,12 +660,20 @@ async function boot() {
         dirty = false;
     }
     if (!network) drawNetwork();
-    else { buildDatasetsFromScratch(); network.setData({ nodes, edges }); }
+    else {
+        buildDatasetsFromScratch();
+        network.setData({ nodes, edges });
+        network.once('stabilizationIterationsDone', focusLatest);
+    }
     setEditMode(false);
     updateBanner();
+    listStale = true;
+    if (view === 'list') { renderList(); listStale = false; }
 }
 
 document.getElementById('btnMode').onclick = () => setEditMode(!editMode);
+document.getElementById('btnViewGraph').onclick = () => setView('graph');
+document.getElementById('btnViewList').onclick = () => setView('list');
 document.getElementById('btnSave').onclick = saveToServer;
 document.getElementById('btnExport').onclick = downloadCSV;
 document.getElementById('importFile').addEventListener('change', e => {
