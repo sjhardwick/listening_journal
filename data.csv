@@ -61,7 +61,7 @@ item_id,item_name,type,notes,love,to_listen,connections,connection_labels,connec
 60,Black Flag - Damaged (1980),album,To re-listen,,1,58,re-interpretation of,forward
 61,Uncle Tupelo,artist,"Country rock band, Belleville, IL, active 1987-1994",,,60,UT covered Gimme Gimme Gimme,backward
 62,Ichiko Aoba - Luminescent Creatures (2025),album,"2025-03-05. Stunning Bacharach/Wilson-like chord changes. String arrangements to die for. More instruments, more production value compared earlier releases [2025, hermine]",,,,,
-63,Ichiko Aoba,artist,"Folk singer-songwriter, Kyoto Prefecture, active 2010-",,,62,made,forward
+63,Ichiko Aoba,artist,"Folk singer-songwriter, Kyoto Prefecture, active 2010-",,,62|54,made|"IA saw Björk live in 2013 and 'fell in love', 'burst'",forward|backward
 64,Lynn Avery & Cole Pulice - Phantasy & Reality (2024),album,"2025-03-25. Gentle piano, sax, electronics. Beautiful soft textures. Like wandering a vast plain in a video game [2024, Moon Glyph]",,,51|47,on Moon Glyph|on Moon Glyph,none|none
 65,Lynn Avery & Cole Pulice,artist,"Ambient/jazz duo, Minneapolis, MN, later Oakland, CA, active 2022?-",,,64,made,forward
 66,Eli Winter,artist,"Folk/jazz guitarist, Chicago, active 2014?-",,,67,made,forward
