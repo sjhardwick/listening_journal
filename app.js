@@ -36,6 +36,7 @@ let dirty = false;
 let model = { nodes: [], edges: [] };
 let view = 'graph';
 let listStale = true;
+let selectedGraphItem = null;
 let viewportRecoveryFrame = 0;
 let viewportRecoveryTimer = 0;
 
@@ -217,6 +218,7 @@ function markDirty() {
     updateBanner();
     listStale = true;
     if (view === 'list') { renderList(); listStale = false; }
+    refreshSelectionUI();
 }
 
 function clearLocal() {
@@ -242,6 +244,162 @@ let edgeSeq = 0;
 function nextEdgeId() {
     edgeSeq++;
     return 'e_' + Date.now().toString(36) + '_' + edgeSeq;
+}
+
+// ----- Selection state/UI ---------------------------------------------------
+
+function getNodeById(id) {
+    return model.nodes.find(n => n.id === id);
+}
+
+function getEdgeById(id) {
+    return model.edges.find(e => e.id === id);
+}
+
+function getEdgeNames(edge) {
+    return {
+        ownerName: getNodeById(edge.owner)?.name || '?',
+        targetName: getNodeById(edge.target)?.name || '?',
+    };
+}
+
+function getSelectedGraphItemFromParams(params) {
+    if (params.nodes.length) return { kind: 'node', id: params.nodes[0] };
+    if (params.edges.length) return { kind: 'edge', id: params.edges[0] };
+    return null;
+}
+
+function renderSelectedInfoBox() {
+    const box = document.getElementById('infoBox');
+    const content = document.getElementById('infoBoxContent');
+
+    if (!selectedGraphItem) {
+        box.style.display = 'none';
+        return;
+    }
+
+    if (selectedGraphItem.kind === 'node') {
+        const node = getNodeById(selectedGraphItem.id);
+        if (!node) {
+            box.style.display = 'none';
+            return;
+        }
+        content.innerHTML =
+            `<b>${escHTML(node.name)}</b><br><span style="color:#666">${escHTML(node.type)}</span>` +
+            (node.notes ? `<div style="margin-top:6px">${escHTML(node.notes)}</div>` : '');
+        box.style.display = 'block';
+        return;
+    }
+
+    const edge = getEdgeById(selectedGraphItem.id);
+    if (!edge) {
+        box.style.display = 'none';
+        return;
+    }
+    content.innerHTML = edge.label ? escHTML(edge.label) : '<i>(no label)</i>';
+    box.style.display = 'block';
+}
+
+function updateSelectionStrip() {
+    const strip = document.getElementById('selectionStrip');
+    const label = document.getElementById('selectionLabel');
+    const addEdgeBtn = document.getElementById('btnAddEdge');
+    const addEdgeActive = addEdgeBtn && addEdgeBtn.getAttribute('aria-pressed') === 'true';
+
+    if (!editMode || !selectedGraphItem || addEdgeActive) {
+        strip.classList.add('hidden');
+        return;
+    }
+
+    if (selectedGraphItem.kind === 'node') {
+        const node = getNodeById(selectedGraphItem.id);
+        if (!node) {
+            strip.classList.add('hidden');
+            return;
+        }
+        label.textContent = 'Selected node: ' + node.name;
+    } else {
+        const edge = getEdgeById(selectedGraphItem.id);
+        if (!edge) {
+            strip.classList.add('hidden');
+            return;
+        }
+        const { ownerName, targetName } = getEdgeNames(edge);
+        label.textContent = `Selected connection: ${ownerName} and ${targetName}`;
+    }
+
+    strip.classList.remove('hidden');
+}
+
+function refreshSelectionUI() {
+    renderSelectedInfoBox();
+    updateSelectionStrip();
+}
+
+function setSelectedGraphItem(item) {
+    selectedGraphItem = item;
+    refreshSelectionUI();
+}
+
+function clearSelectedGraphItem() {
+    setSelectedGraphItem(null);
+}
+
+function removeNodeById(id) {
+    const node = getNodeById(id);
+    if (!node) return false;
+    model.edges = model.edges.filter(e => e.owner !== id && e.target !== id);
+    model.nodes = model.nodes.filter(n => n.id !== id);
+    dropNode(id);
+    return true;
+}
+
+function removeEdgeById(id) {
+    const edge = getEdgeById(id);
+    if (!edge) return false;
+    model.edges = model.edges.filter(e => e.id !== id);
+    dropEdge(id);
+    return true;
+}
+
+function editSelectedGraphItem() {
+    if (!selectedGraphItem) return;
+
+    if (selectedGraphItem.kind === 'node') {
+        const node = getNodeById(selectedGraphItem.id);
+        if (node) openNodeEditor(node);
+        else clearSelectedGraphItem();
+        return;
+    }
+
+    const edge = getEdgeById(selectedGraphItem.id);
+    if (edge) openEdgeEditor(edge);
+    else clearSelectedGraphItem();
+}
+
+function deleteSelectedGraphItem() {
+    if (!selectedGraphItem) return;
+
+    if (selectedGraphItem.kind === 'node') {
+        const node = getNodeById(selectedGraphItem.id);
+        if (!node) {
+            clearSelectedGraphItem();
+            return;
+        }
+        if (!confirm('Delete this node and its connections?')) return;
+        removeNodeById(node.id);
+    } else {
+        const edge = getEdgeById(selectedGraphItem.id);
+        if (!edge) {
+            clearSelectedGraphItem();
+            return;
+        }
+        if (!confirm('Delete this connection?')) return;
+        removeEdgeById(edge.id);
+    }
+
+    clearSelectedGraphItem();
+    markDirty();
 }
 
 // ----- Modal -----------------------------------------------------------------
@@ -385,9 +543,8 @@ function openNodeEditor(existing, position) {
         onDelete() {
             if (!existing) return;
             if (!confirm('Delete this node and its connections?')) return false;
-            model.edges = model.edges.filter(e => e.owner !== existing.id && e.target !== existing.id);
-            model.nodes = model.nodes.filter(n => n.id !== existing.id);
-            dropNode(existing.id);
+            removeNodeById(existing.id);
+            clearSelectedGraphItem();
             markDirty();
         },
     });
@@ -408,8 +565,8 @@ function openEdgeEditor(edge) {
         },
         onDelete() {
             if (!confirm('Delete this connection?')) return false;
-            model.edges = model.edges.filter(x => x !== edge);
-            dropEdge(edge.id);
+            removeEdgeById(edge.id);
+            clearSelectedGraphItem();
             markDirty();
         },
         onCancel() { /* new edge was never committed */ },
@@ -465,20 +622,25 @@ function drawNetwork() {
                 },
             },
             deleteNode(data, cb) {
+                let changed = false;
                 for (const id of data.nodes) {
-                    model.edges = model.edges.filter(e => e.owner !== id && e.target !== id);
-                    model.nodes = model.nodes.filter(n => n.id !== id);
-                    dropNode(id);
+                    changed = removeNodeById(id) || changed;
                 }
-                markDirty();
+                if (changed) {
+                    clearSelectedGraphItem();
+                    markDirty();
+                }
                 cb(null);
             },
             deleteEdge(data, cb) {
+                let changed = false;
                 for (const id of data.edges) {
-                    model.edges = model.edges.filter(e => e.id !== id);
-                    dropEdge(id);
+                    changed = removeEdgeById(id) || changed;
                 }
-                markDirty();
+                if (changed) {
+                    clearSelectedGraphItem();
+                    markDirty();
+                }
                 cb(null);
             },
         },
@@ -487,27 +649,8 @@ function drawNetwork() {
     window.network = network;
     network.once('stabilizationIterationsDone', focusLatest);
 
-    const box = document.getElementById('infoBox');
-    const content = document.getElementById('infoBoxContent');
-
     network.on('click', params => {
-        if (params.nodes.length) {
-            const n = model.nodes.find(x => x.id === params.nodes[0]);
-            if (n) {
-                content.innerHTML =
-                    `<b>${escHTML(n.name)}</b><br><span style="color:#666">${escHTML(n.type)}</span>` +
-                    (n.notes ? `<div style="margin-top:6px">${escHTML(n.notes)}</div>` : '');
-                box.style.display = 'block';
-            }
-        } else if (params.edges.length) {
-            const e = model.edges.find(x => x.id === params.edges[0]);
-            if (e) {
-                content.innerHTML = e.label ? escHTML(e.label) : '<i>(no label)</i>';
-                box.style.display = 'block';
-            }
-        } else {
-            box.style.display = 'none';
-        }
+        setSelectedGraphItem(getSelectedGraphItemFromParams(params));
         if (!editMode) neighbourhoodHighlight(params);
     });
 
@@ -522,7 +665,9 @@ function drawNetwork() {
         }
     });
 
-    document.getElementById('infoBoxClose').onclick = () => { box.style.display = 'none'; };
+    document.getElementById('infoBoxClose').onclick = () => {
+        document.getElementById('infoBox').style.display = 'none';
+    };
 }
 
 function focusLatest() {
@@ -553,8 +698,11 @@ function setEditMode(on) {
             network.unselectAll();
             network.disableEditMode();
             resetAddEdgeUI();
+            clearSelectedGraphItem();
         }
     }
+
+    if (on) updateSelectionStrip();
 }
 
 function resetAddEdgeUI() {
@@ -562,6 +710,7 @@ function resetAddEdgeUI() {
     if (b) b.setAttribute('aria-pressed', 'false');
     const s = document.getElementById('hintStrip');
     if (s) s.classList.remove('is-shown');
+    updateSelectionStrip();
 }
 
 // ----- View toggle (Graph ↔ List) -------------------------------------------
@@ -673,6 +822,7 @@ function importCSVFile(file) {
             clearLocal();
             buildDatasetsFromScratch();
             network.setData({ nodes, edges });
+            clearSelectedGraphItem();
         } catch (err) {
             alert('Import failed: ' + err.message);
         }
@@ -720,6 +870,7 @@ async function boot() {
         network.setData({ nodes, edges });
         network.once('stabilizationIterationsDone', focusLatest);
     }
+    clearSelectedGraphItem();
     setEditMode(false);
     updateBanner();
     listStale = true;
@@ -748,8 +899,11 @@ document.getElementById('btnAddEdge').onclick = () => {
         network.addEdgeMode();
         b.setAttribute('aria-pressed', 'true');
         document.getElementById('hintStrip').classList.add('is-shown');
+        updateSelectionStrip();
     }
 };
+document.getElementById('btnEditSelection').onclick = editSelectedGraphItem;
+document.getElementById('btnDeleteSelection').onclick = deleteSelectedGraphItem;
 document.getElementById('importFile').addEventListener('change', e => {
     const f = e.target.files[0];
     if (f) importCSVFile(f);

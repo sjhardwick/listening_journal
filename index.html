@@ -10,22 +10,38 @@
     <style>
         :root {
             --toolbar-h: 48px;
+            --context-strip-h: 36px;
             --legend-h: 56px;
+            --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --toolbar-total-h: calc(var(--toolbar-h) + var(--safe-top));
         }
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%;
+            min-height: 100vh;
+            height: 100vh;
             width: 100%;
             overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             -webkit-text-size-adjust: 100%;
             background: #fff;
         }
+        @supports (height: 100dvh) {
+            html, body {
+                min-height: 100dvh;
+                height: 100dvh;
+            }
+        }
+        @media (display-mode: standalone) {
+            html, body {
+                min-height: 100vh;
+                height: 100vh;
+            }
+        }
         #mynetwork {
             position: absolute;
-            top: var(--toolbar-h);
+            top: var(--toolbar-total-h);
             left: 0;
             right: 0;
             bottom: calc(var(--legend-h) + var(--safe-bottom));
@@ -33,7 +49,7 @@
         }
         #listview {
             position: absolute;
-            top: var(--toolbar-h);
+            top: var(--toolbar-total-h);
             left: 0;
             right: 0;
             bottom: var(--safe-bottom);
@@ -91,11 +107,12 @@
         .toolbar {
             position: fixed;
             top: 0; left: 0; right: 0;
-            height: var(--toolbar-h);
+            height: var(--toolbar-total-h);
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 0 12px;
+            padding: var(--safe-top) 12px 0;
+            box-sizing: border-box;
             background: rgba(249,249,249,.94);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
             backdrop-filter: saturate(180%) blur(20px);
@@ -131,6 +148,8 @@
             cursor: pointer;
         }
         .btn-primary:active { opacity: .85; }
+        .btn-danger { color: var(--ios-red); }
+        .btn-danger:active { background: rgba(255,59,48,.1); }
         .btn-icon {
             width: 40px;
             height: 40px;
@@ -176,7 +195,7 @@
         /* Hint strip shown while add-edge mode is active */
         .hint-strip {
             position: fixed;
-            top: var(--toolbar-h);
+            top: var(--toolbar-total-h);
             left: 0; right: 0;
             height: 28px;
             background: var(--tint-bg);
@@ -189,6 +208,43 @@
             z-index: 9;
         }
         .hint-strip.is-shown { display: flex; }
+        .selection-strip {
+            position: fixed;
+            top: var(--toolbar-total-h);
+            left: 0;
+            right: 0;
+            height: var(--context-strip-h);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 0 12px;
+            background: rgba(255,255,255,.96);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--hairline);
+            box-sizing: border-box;
+            z-index: 9;
+        }
+        .selection-label {
+            min-width: 0;
+            color: #555;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .selection-actions {
+            display: inline-flex;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+        .selection-actions .btn {
+            height: 28px;
+            padding: 0 10px;
+            font-size: 13px;
+        }
         .legend {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -215,7 +271,7 @@
         /* Info box for click-to-see-notes */
         #infoBox {
             position: fixed;
-            top: calc(var(--toolbar-h) + 8px);
+            top: calc(var(--toolbar-total-h) + var(--context-strip-h) + 8px);
             left: 8px;
             max-width: min(380px, calc(100vw - 16px));
             max-height: 40vh;
@@ -398,6 +454,13 @@
     </header>
 
     <div class="hint-strip" id="hintStrip">Drag from one node to another</div>
+    <div class="selection-strip hidden" id="selectionStrip">
+        <div class="selection-label" id="selectionLabel"></div>
+        <div class="selection-actions">
+            <button class="btn" id="btnEditSelection">Edit</button>
+            <button class="btn btn-danger" id="btnDeleteSelection">Delete</button>
+        </div>
+    </div>
 
     <div id="banner"></div>
     <div id="mynetwork"></div>
