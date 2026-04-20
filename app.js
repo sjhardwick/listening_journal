@@ -36,6 +36,8 @@ let dirty = false;
 let model = { nodes: [], edges: [] };
 let view = 'graph';
 let listStale = true;
+let viewportRecoveryFrame = 0;
+let viewportRecoveryTimer = 0;
 
 // ----- CSV parser (RFC 4180-ish) --------------------------------------------
 
@@ -251,19 +253,55 @@ const modalSaveBtn = document.getElementById('modalSave');
 const modalCancelBtn = document.getElementById('modalCancel');
 const modalDeleteBtn = document.getElementById('modalDelete');
 
+function isStandaloneDisplayMode() {
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+        window.navigator.standalone === true;
+}
+
+function isIOSTouchDevice() {
+    const ua = navigator.userAgent || '';
+    const appleMobile = /iPad|iPhone|iPod/.test(ua) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    return appleMobile && (navigator.maxTouchPoints > 0 || 'ontouchstart' in window);
+}
+
+function shouldAutoFocusModalField() {
+    return !(isIOSTouchDevice() || isStandaloneDisplayMode());
+}
+
+function blurActiveElement() {
+    const active = document.activeElement;
+    if (active && typeof active.blur === 'function') active.blur();
+}
+
+function recoverViewportLayout() {
+    if (viewportRecoveryFrame) cancelAnimationFrame(viewportRecoveryFrame);
+    if (viewportRecoveryTimer) clearTimeout(viewportRecoveryTimer);
+    viewportRecoveryFrame = requestAnimationFrame(() => {
+        viewportRecoveryFrame = 0;
+        viewportRecoveryTimer = window.setTimeout(() => {
+            viewportRecoveryTimer = 0;
+            setEditMode(editMode);
+            if (view === 'graph' && network) network.redraw();
+        }, 80);
+    });
+}
+
 function openModal(title, bodyHTML, opts) {
     modalTitle.textContent = title;
     modalBody.innerHTML = bodyHTML;
     modalDeleteBtn.classList.toggle('hidden', !opts.showDelete);
     modal.style.display = 'flex';
     const first = modalBody.querySelector('input, textarea, select');
-    if (first) setTimeout(() => first.focus(), 50);
+    if (first && shouldAutoFocusModalField()) setTimeout(() => first.focus(), 50);
 
     const close = () => {
+        blurActiveElement();
         modal.style.display = 'none';
         modalSaveBtn.onclick = null;
         modalCancelBtn.onclick = null;
         modalDeleteBtn.onclick = null;
+        recoverViewportLayout();
     };
     modalSaveBtn.onclick = () => { if (opts.onSave() !== false) close(); };
     modalCancelBtn.onclick = () => { close(); if (opts.onCancel) opts.onCancel(); };
@@ -722,5 +760,10 @@ document.addEventListener('keydown', e => {
         modalCancelBtn.click();
     }
 });
+window.addEventListener('resize', recoverViewportLayout);
+window.addEventListener('orientationchange', recoverViewportLayout);
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', recoverViewportLayout);
+}
 
 boot();
